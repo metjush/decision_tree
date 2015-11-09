@@ -24,7 +24,7 @@ class TreeBagger:
         self.trees = [0]*n_trees
 
     def train(self, X, y):
-        #check that X,y are good
+        #TODO: check that X,y are good
         indices = np.arange(len(X))
         #determine the size of the bootstrap sample
         strapsize = np.int(len(X)*self.fraction)
@@ -79,4 +79,4 @@ class TreeBagger:
         else:
             warnings.warn("Wrong evaluation method specified, defaulting to F1 score", RuntimeWarning)
             return self.evaluate(X,y)
-        
+
