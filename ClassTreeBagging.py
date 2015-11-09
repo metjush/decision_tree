@@ -10,7 +10,7 @@ __author__ = 'metjush'
 #  the number of examples to select for each iteration, and the maximum depth of each forest
 
 import numpy as np
-from classtree import ClassificationTree
+from ClassTree import ClassificationTree
 from scipy import stats
 import warnings
 

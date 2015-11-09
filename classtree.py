@@ -12,7 +12,7 @@ __author__ = 'metjush'
 
 import numpy as np
 import warnings
-from treenode import Node
+from TreeNode import Node
 
 #this is the main classifier object
 class ClassificationTree:
