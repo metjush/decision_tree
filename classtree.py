@@ -160,6 +160,15 @@ class ClassificationTree:
         else:
             return False
 
+    #__node_count() returns the total number of nodes
+    def __node_count(self):
+        if not self.trained:
+            return 0
+        else:
+            n = 0
+            for level in self.nodes:
+                n += len(level)
+            return n
 
     # train() is the function the user calls to train the tree. It's mainly a wrapper for the __algorithm() function
     def train(self, X, y):
@@ -249,6 +258,17 @@ class ClassificationTree:
             scores[f] = self.evaluate(Xtest,ytest,method)
             print(scores[f])
         return scores
+
+    # the describe() function returns a human-readable description of the fitted model
+    def describe(self):
+        if not self.trained:
+            print("I am an untrained decision tree with depth limited to %d levels" % self.depth_limit)
+        else:
+            print("I am a trained decision tree with depth limited to %d levels\n" % self.depth_limit)
+            nnodes = self.__node_count()
+            print("I have %d decision and terminal nodes, arranged in %d levels." % (nnodes, len(self.nodes)))
+
+
 
 
 
