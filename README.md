@@ -68,3 +68,8 @@ bag = TreeBagger(n_trees=50, depth_limit = 10, sample_fraction=0.75)
 
 The public methods are the same as those for the simple tree, with the exception of cross-validation, which isn't currently implemented for the Bagged Forest. 
 
+### Random Forest
+
+The `RandomForest` object implementes a wrapper for growing a random forest. The only difference with Bagged Forest is that the Random Forest algorithm also subsamples features during each iteration. This is preferred for a large number of features to prevent correlation and overfitting. Otherwise, the functionality and parameters of the class are the same as with `TreeBagger`. 
+
+The rule of thumb used in subsampling features is `sqrt(n)`. For low-dimensional datasets (`n<=10`), this is ignored and all features are used.
