@@ -22,6 +22,7 @@ class TreeBagger:
         self.depth_limit = depth_limit if depth_limit in set({int, float, np.int64, np.float64}) else np.inf
         self.fraction = sample_fraction
         self.trees = [0]*n_trees
+        self.trained = False
 
     def train(self, X, y):
         #TODO: check that X,y are good
@@ -38,9 +39,12 @@ class TreeBagger:
             #train the t-th tree with the strapped sample
             tree.train(Xstrap,ystrap)
             self.trees[t] = tree
+        self.trained = True
         print("%d trees grown" % self.n_trees)
 
     def predict(self, X):
+        if not self.trained:
+            raise RuntimeError("The bagged forest classifier hasn't been trained yet")
         #get predictions from each tree
         #combine predictions into one matrix
         #get the mode of predictions for each sample

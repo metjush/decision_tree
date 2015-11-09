@@ -57,7 +57,7 @@ tree = ClassificationTree(depth_limit = 10)
 cross_val_scores = tree.cross_val(X, y, split = 0.3, method = 'f1', folds = 5)
 ```
 
-### Bagged Forrest
+### Bagged Forest
 
 The `TreeBagger` object implements a wrapper for growing a "forest" of "bagged" trees. _Bagging_ refers to _bootstrap aggregating_, where for a specified number of iterations, a new tree is grown with a bootstrapped subsample (with repetition) of the supplied dataset. The class `init`s with parameters that specify the number of trees (`n_trees`), the depth limit of each tree (`depth_limit`) and the fraction of the dataset that should be used as a size of each bootstrap sample (`sample_fraction`).
 
