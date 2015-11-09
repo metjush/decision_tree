@@ -1,12 +1,12 @@
 # Classification Decision Tree
 
-This repository is a basic implementation of a decision tree algorithm for supervised classification learning. It implements a basic tree classifier, as well as a wrapper for tree bagging (bootstrap aggregating).
+This repository is a basic implementation of a decision tree algorithm for supervised classification learning. It implements a basic tree classifier, as well as a wrapper for tree bagging (bootstrap aggregating) and random forests.
 
 ## Basic usage
 
 ### Single Tree
 
-The `ClassificationTree` object can be created with one basic parameter: `depth_limit`. This restrict tree depth to prevent over-fitting.
+The `ClassificationTree` object can be created with one basic parameter: `depth_limit`. This restricts tree depth to prevent over-fitting.
 
 ```python
 from ClassTree import *
