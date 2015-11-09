@@ -11,6 +11,8 @@ __author__ = 'metjush'
 
 import numpy as np
 from classtree import ClassificationTree
+from scipy import stats
+import warnings
 
 
 class TreeBagger:
@@ -39,13 +41,42 @@ class TreeBagger:
         print("%d trees grown" % self.n_trees)
 
     def predict(self, X):
-        return 0
+        #get predictions from each tree
+        #combine predictions into one matrix
+        #get the mode of predictions for each sample
+        prediction_matrix = np.zeros((len(X), self.n_trees))
+        for t in range(self.n_trees):
+            pred = self.trees[t].predict(X)
+            prediction_matrix[:,t] = pred
+        final_vote = stats.mode(prediction_matrix, axis=1)[0]
 
-    def evaluate(self, X, y):
-        return 0
+        return final_vote.flatten()
 
+    def evaluate(self, X, y, method='f1'):
+        yhat = self.predict(X)
+        accurate = y == yhat
+        positive = np.sum(y == 1)
+        hatpositive = np.sum(yhat == 1)
+        tp = np.sum(yhat[accurate] == 1)
 
-
-
-
-
+        #F1 score
+        if method == 'f1':
+            recall = 1.*tp/positive if positive > 0 else 0.
+            precision = 1.*tp/hatpositive if hatpositive > 0 else 0.
+            f1 = (2.*precision*recall)/(precision+recall) if (precision+recall) > 0 else 0.
+            return f1
+        #simple accuracy measure
+        elif method == 'acc':
+            return (1.*np.sum(accurate))/len(yhat)
+        #matthews correlation coefficient
+        elif method == 'matthews':
+            tn = np.sum(yhat[accurate] == 0)
+            fp = np.sum(yhat[np.invert(accurate)] == 1)
+            fn = np.sum(yhat[np.invert(accurate)] == 0)
+            denominator = np.sqrt( (tp+fp)*(tp+fn)*(tn+fp)*(tn*fn) )
+            mat = 1.*((tp*tn)-(fp*fn)) / denominator if denominator > 0 else 0.
+            return mat
+        else:
+            warnings.warn("Wrong evaluation method specified, defaulting to F1 score", RuntimeWarning)
+            return self.evaluate(X,y)
+        

@@ -121,7 +121,7 @@ class ClassificationTree:
                 self.nodes[level+1]
             except IndexError:
                 self.nodes.append([])
-                print("Moving one level deeper")
+                #print("Moving one level deeper")
 
             #check if you shouldn't terminate here
             if len(leftS) == 0 or leftS.shape[1] == 0:
@@ -134,7 +134,7 @@ class ClassificationTree:
             new_node.outcome[0] = self.__algorithm(leftS,leftLabels,level=level+1,par_node=new_node)
             new_node.outcome[1] = self.__algorithm(rightS,rightLabels,level=level+1,par_node=new_node)
             return new_node
-        print("Tree grown")
+        #print("Tree grown")
 
     #__classify() takes one sample x and classifies it into a label
     def __classify(self, x):
@@ -249,35 +249,6 @@ class ClassificationTree:
             scores[f] = self.evaluate(Xtest,ytest,method)
             print(scores[f])
         return scores
-
-
-X = np.array([
-    [12., 0, 0, 1, 0],
-    [11., 0, 1, 0, 1],
-    [13.5, 0, 1, 1, 0],
-    [10.1, 1, 0, 0, 0],
-    [9.4, 1, 1, 0, 0],
-    [7.8, 0, 1, 1, 0],
-    [1.5, 0, 1, 0, 1],
-    [1.9, 0, 1, 0, 1],
-    [3.5, 1, 0, 0, 0],
-    [9.1, 0, 0, 1, 1]
-])
-
-y = np.array([0, 1, 0, 1, 0, 0, 1, 1, 0, 0])
-
-from sklearn.datasets import load_iris
-data = load_iris()
-Xiris = data.data
-yiris = data.target
-
-clf = ClassificationTree()
-clf.train(Xiris,yiris)
-for level in clf.nodes:
-    for node in level:
-        node.describe()
-score = clf.cross_val(Xiris, yiris,folds=10)
-print(score)
 
 
 
