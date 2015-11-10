@@ -313,7 +313,7 @@ class ClassificationTree:
         return pos[0]
 
     # the to_json() function saves the trained tree as a JSON object that can be used for visualization
-    def to_json(self, filename="tree.json"):
+    def to_json(self, filename):
         if not self.trained:
             print("Untrained tree can't be saved to JSON")
             return False
@@ -329,6 +329,9 @@ class ClassificationTree:
             for n, node in enumerate(level):
                 ndict = {
                     "terminal": node.terminal
+                    "entropy": node.entropy
+                    "parent_level": l-1 if l > 0 else None
+                    "parent_index": self.__find_node(node.parent, l-1) if l > 0 else None
                 }
                 if node.terminal:
                     ndict["outcome"] = node.outcome[0]
@@ -353,6 +356,10 @@ class ClassificationTree:
             json.dump(tree_dict, jsonfile)
 
         return tree_dict
+
+  
+
+
 
 
 
