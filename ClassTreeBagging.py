@@ -17,12 +17,13 @@ import warnings
 
 class TreeBagger:
 
-    def __init__(self, n_trees=50, depth_limit=None, sample_fraction=0.75):
+    def __init__(self, n_trees=50, depth_limit=None, sample_fraction=0.75, impurity="gini"):
         self.n_trees = n_trees
         self.depth_limit = depth_limit if depth_limit in set({int, float, np.int64, np.float64}) else np.inf
         self.fraction = sample_fraction
         self.trees = [0]*n_trees
         self.trained = False
+        self.impurity = impurity
 
     def __untrain(self):
         self.trained = False
@@ -41,7 +42,7 @@ class TreeBagger:
         strapsize = np.int(len(X)*self.fraction)
         for t in range(self.n_trees):
             #creat a new classification tree
-            tree = ClassificationTree(depth_limit=self.depth_limit)
+            tree = ClassificationTree(depth_limit=self.depth_limit, impurity=self.impurity)
             #bootstrap a sample
             bootstrap = np.random.choice(indices, strapsize)
             Xstrap = X[bootstrap,:]
