@@ -13,6 +13,7 @@ __author__ = 'metjush'
 import numpy as np
 import warnings
 from TreeNode import Node
+import json
 
 #this is the main classifier object
 class ClassificationTree:
@@ -306,9 +307,52 @@ class ClassificationTree:
             nnodes = self.__node_count()
             print("I have %d decision and terminal nodes, arranged in %d levels." % (nnodes, len(self.nodes)))
 
-   
+    #__find_node() finds the position of a node in the given level of the tree
+    def __find_node(self, node, level):
+        pos = [i for i,n in enumerate(self.nodes[level]) if n == node]
+        return pos[0]
 
+    # the to_json() function saves the trained tree as a JSON object that can be used for visualization
+    def to_json(self, filename="tree.json"):
+        if not self.trained:
+            print("Untrained tree can't be saved to JSON")
+            return False
 
+        tree_dict = {
+            "depth": len(self.nodes),
+            "nodes": self.__node_count(),
+            "dimensions": self.dimensions,
+            "levels": [[]]*len(self.nodes)
+        }
+
+        for l, level in enumerate(self.nodes):
+            for n, node in enumerate(level):
+                ndict = {
+                    "terminal": node.terminal
+                }
+                if node.terminal:
+                    ndict["outcome"] = node.outcome[0]
+                else:
+                    ndict["feature"] = node.feature
+                    ndict["threshold"] = node.threshold
+                    ndict["outcome"] = [
+                        {
+                            "level": l + 1,
+                            "index": self.__find_node(node.outcome[0], l+1)
+                        },
+                        {
+                            "level": l + 1,
+                            "index": self.__find_node(node.outcome[1], l+1)
+                        }
+                    ]
+
+                tree_dict["levels"][l].extend([ndict])
+
+        #write to specified file
+        with open(filename, "w") as jsonfile:
+            json.dump(tree_dict, jsonfile)
+
+        return tree_dict
 
 
 

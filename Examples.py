@@ -31,6 +31,9 @@ tree.train(X_iris, y_iris)
 print("Accuracy of the simple tree on iris dataset is %f" % tree.evaluate(X_iris, y_iris))
 tree.describe()
 
+#write to json
+js = tree.to_json("iris_json.json")
+
 # Cross validation of a tree
 tree.cross_val(X_iris, y_iris, folds=5)
 

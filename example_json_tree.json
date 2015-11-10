@@ -1,0 +1,32 @@
+{
+	"depth": 5,
+	"nodes": 13,
+	"dimensions": 16,
+	"levels": [
+		[
+			{
+				"terminal": False,
+				"feature": 1,
+				"threshold": 0.5,
+				"outcome": [
+					{
+						"level": 1,
+						"index": 0
+					},
+					{
+						"level": 1,
+						"index": 1
+					}
+				] 
+			},
+			...
+		],
+		...
+		[
+			{
+				"terminal": True,
+				"outcome": 2
+			}
+		]
+	]
+}
