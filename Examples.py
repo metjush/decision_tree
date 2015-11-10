@@ -34,6 +34,13 @@ tree.describe()
 #write to json
 js = tree.to_json("iris_json.json")
 
+#load from json
+tree = tree.from_json("iris_json.json")
+
+#check it is the same
+tree.describe()
+print("Accuracy of the reloaded tree on iris dataset is %f" % tree.evaluate(X_iris, y_iris))
+
 # Cross validation of a tree
 tree.cross_val(X_iris, y_iris, folds=5)
 

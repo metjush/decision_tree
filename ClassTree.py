@@ -322,15 +322,17 @@ class ClassificationTree:
             "depth": len(self.nodes),
             "nodes": self.__node_count(),
             "dimensions": self.dimensions,
-            "levels": [[]]*len(self.nodes)
+            "levels": {}
         }
 
         for l, level in enumerate(self.nodes):
+            lvlkey = "lvl%d" % l
+            tree_dict["levels"][lvlkey] = []
             for n, node in enumerate(level):
                 ndict = {
-                    "terminal": node.terminal
-                    "entropy": node.entropy
-                    "parent_level": l-1 if l > 0 else None
+                    "terminal": node.terminal,
+                    "entropy": node.entropy,
+                    "parent_level": l-1 if l > 0 else None,
                     "parent_index": self.__find_node(node.parent, l-1) if l > 0 else None
                 }
                 if node.terminal:
@@ -349,7 +351,7 @@ class ClassificationTree:
                         }
                     ]
 
-                tree_dict["levels"][l].extend([ndict])
+                tree_dict["levels"][lvlkey].extend([ndict])
 
         #write to specified file
         with open(filename, "w") as jsonfile:
@@ -357,7 +359,72 @@ class ClassificationTree:
 
         return tree_dict
 
-  
+      # the from_json() function takes an input json file and constructs a trained tree from the file
+    def from_json(self, filename):
+        if self.trained:
+            print("This tree has already been trained. This procedure will purge the trained rules.")
+            self.__untrain()
+
+        with open(filename, "r") as jsonfile:
+            tree_dict = json.load(jsonfile)
+
+        #load basics
+        try:
+            self.depth_limit = tree_dict["depth"]
+        except KeyError:
+            print("Invalid JSON format")
+            return False
+
+        try:
+            self.dimensions = tree_dict["dimensions"]
+        except KeyError:
+            print("Invalid JSON format")
+            return False
+
+        try:
+            levels = tree_dict["levels"]
+        except KeyError:
+            print("Invalid JSON format")
+            return False
+
+        #first run, just create Node instances so that you can reference them in output/parents
+
+        for i in range(len(levels)):
+            key = "lvl%d" % i
+            level = levels[key]
+            if len(level) > 0:
+                self.nodes.append([])
+                for r in range(len(level)):
+                    n = Node(level=i)
+                    self.nodes[i].extend([n])
+
+        for key, level in levels.iteritems():
+            i = int(key[-1])
+            if len(level) == 0:
+                continue
+            for n, node in enumerate(level):
+                mynode = self.nodes[i][n]
+                mynode.entropy = node["entropy"]
+
+                if node["terminal"]:
+                    mynode.outcome = [node["outcome"]]
+                else:
+                    mynode.feature = node["feature"]
+                    mynode.threshold = node["threshold"]
+                    left_outcome = self.nodes[i+1][node["outcome"][0]["index"]]
+                    right_outcome = self.nodes[i+1][node["outcome"][1]["index"]]
+                    mynode.outcome = [left_outcome, right_outcome]
+                    mynode.terminal = False
+
+                if i > 0:
+                    parent = self.nodes[i-1][node["parent_index"]]
+                    mynode.parent = parent
+
+        self.trained = True
+        return self
+
+
+
 
 
 

@@ -1,43 +1,13 @@
 {
     "depth": 5,
-    "levels": [
-        [
+    "levels": {
+        "lvl2": [
             {
+                "parent_level": 1,
+                "parent_index": 1,
+                "feature": 0,
                 "terminal": false,
-                "threshold": 2.18,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 1
-                    },
-                    {
-                        "index": 1,
-                        "level": 1
-                    }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 1.7499999999999996,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 2
-                    },
-                    {
-                        "index": 1,
-                        "level": 2
-                    }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": false,
+                "entropy": 0.16803840877914955,
                 "threshold": 4.9,
                 "outcome": [
                     {
@@ -48,11 +18,14 @@
                         "index": 1,
                         "level": 3
                     }
-                ],
-                "feature": 0
+                ]
             },
             {
+                "parent_level": 1,
+                "parent_index": 1,
+                "feature": 0,
                 "terminal": false,
+                "entropy": 0.04253308128544431,
                 "threshold": 6.0600000000000005,
                 "outcome": [
                     {
@@ -63,111 +36,46 @@
                         "index": 3,
                         "level": 3
                     }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": true,
-                "outcome": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 2
+                ]
             }
         ],
-        [
+        "lvl3": [
             {
-                "terminal": false,
-                "threshold": 2.18,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 1
-                    },
-                    {
-                        "index": 1,
-                        "level": 1
-                    }
-                ],
-                "feature": 2
+                "terminal": true,
+                "outcome": 2,
+                "parent_level": 2,
+                "entropy": 0.5,
+                "parent_index": 0
             },
             {
                 "terminal": true,
-                "outcome": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 1.7499999999999996,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 2
-                    },
-                    {
-                        "index": 1,
-                        "level": 2
-                    }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": false,
-                "threshold": 4.9,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 3
-                    },
-                    {
-                        "index": 1,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 6.0600000000000005,
-                "outcome": [
-                    {
-                        "index": 2,
-                        "level": 3
-                    },
-                    {
-                        "index": 3,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
+                "outcome": 1,
+                "parent_level": 2,
+                "entropy": 0.14201183431952646,
+                "parent_index": 0
             },
             {
                 "terminal": true,
-                "outcome": 2
+                "outcome": 1,
+                "parent_level": 2,
+                "entropy": 0.21875,
+                "parent_index": 1
             },
             {
                 "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 2
+                "outcome": 2,
+                "parent_level": 2,
+                "entropy": 0,
+                "parent_index": 1
             }
         ],
-        [
+        "lvl0": [
             {
+                "parent_level": null,
+                "parent_index": null,
+                "feature": 2,
                 "terminal": false,
+                "entropy": 0.6666666666666667,
                 "threshold": 2.18,
                 "outcome": [
                     {
@@ -178,97 +86,23 @@
                         "index": 1,
                         "level": 1
                     }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 1.7499999999999996,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 2
-                    },
-                    {
-                        "index": 1,
-                        "level": 2
-                    }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": false,
-                "threshold": 4.9,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 3
-                    },
-                    {
-                        "index": 1,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 6.0600000000000005,
-                "outcome": [
-                    {
-                        "index": 2,
-                        "level": 3
-                    },
-                    {
-                        "index": 3,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": true,
-                "outcome": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 2
+                ]
             }
         ],
-        [
-            {
-                "terminal": false,
-                "threshold": 2.18,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 1
-                    },
-                    {
-                        "index": 1,
-                        "level": 1
-                    }
-                ],
-                "feature": 2
-            },
+        "lvl1": [
             {
                 "terminal": true,
-                "outcome": 0
+                "outcome": 0,
+                "parent_level": 0,
+                "entropy": 0,
+                "parent_index": 0
             },
             {
+                "parent_level": 0,
+                "parent_index": 0,
+                "feature": 2,
                 "terminal": false,
+                "entropy": 0.5,
                 "threshold": 1.7499999999999996,
                 "outcome": [
                     {
@@ -279,139 +113,11 @@
                         "index": 1,
                         "level": 2
                     }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": false,
-                "threshold": 4.9,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 3
-                    },
-                    {
-                        "index": 1,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 6.0600000000000005,
-                "outcome": [
-                    {
-                        "index": 2,
-                        "level": 3
-                    },
-                    {
-                        "index": 3,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": true,
-                "outcome": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 2
+                ]
             }
         ],
-        [
-            {
-                "terminal": false,
-                "threshold": 2.18,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 1
-                    },
-                    {
-                        "index": 1,
-                        "level": 1
-                    }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 1.7499999999999996,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 2
-                    },
-                    {
-                        "index": 1,
-                        "level": 2
-                    }
-                ],
-                "feature": 2
-            },
-            {
-                "terminal": false,
-                "threshold": 4.9,
-                "outcome": [
-                    {
-                        "index": 0,
-                        "level": 3
-                    },
-                    {
-                        "index": 1,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": false,
-                "threshold": 6.0600000000000005,
-                "outcome": [
-                    {
-                        "index": 2,
-                        "level": 3
-                    },
-                    {
-                        "index": 3,
-                        "level": 3
-                    }
-                ],
-                "feature": 0
-            },
-            {
-                "terminal": true,
-                "outcome": 2
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 1
-            },
-            {
-                "terminal": true,
-                "outcome": 2
-            }
-        ]
-    ],
+        "lvl4": []
+    },
     "nodes": 9,
     "dimensions": 4
 }
