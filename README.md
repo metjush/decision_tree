@@ -73,3 +73,15 @@ The public methods are the same as those for the simple tree, with the exception
 The `RandomForest` object implementes a wrapper for growing a random forest. The only difference with Bagged Forest is that the Random Forest algorithm also subsamples features during each iteration. This is preferred for a large number of features to prevent correlation and overfitting. Otherwise, the functionality and parameters of the class are the same as with `TreeBagger`. 
 
 The rule of thumb used in subsampling features is `sqrt(n)`. For low-dimensional datasets (`n<=10`), this is ignored and all features are used.
+
+## Helpful resources
+
+The following documents really helped in implementing the algorithm:
+
+[Decision Tree Learning Wikipedia page](https://en.wikipedia.org/wiki/Decision_tree_learning)
+
+[The ID3 Wikipedia page](https://en.wikipedia.org/wiki/ID3_algorithm)
+
+["Classification: Basic Concepts, Decision Trees, and Model Evaluation" from University of Minnesota](http://www-users.cs.umn.edu/~kumar/dmbook/ch4.pdf)
+
+
