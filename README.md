@@ -2,6 +2,10 @@
 
 This repository is a basic implementation of a decision tree algorithm for supervised classification learning. It implements a basic tree classifier, as well as a wrapper for tree bagging (bootstrap aggregating) and random forests.
 
+## Dependencies
+
+This implementation is built on `numpy` (<http://www.numpy.org/>), which is the only dependency required for running the classifier. The example script in `Examples.py` also requires `scikit-learn` (<http://scikit-learn.org/stable/index.html>) as it uses their `datasets` functionality to load example data. However, this package is not required for running the trees.
+
 ## Basic usage
 
 ### Single Tree
