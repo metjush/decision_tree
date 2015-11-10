@@ -147,7 +147,7 @@ class ClassificationTree:
 
     #__untrain() removes old learned nodes when a new train() is called on a trained tree
     def __untrain(self):
-        print("Retraining the tree, dumping old learned rules")
+        #print("Retraining the tree, dumping old learned rules")
         self.trained = False
         self.nodes = [[]]
 
@@ -262,9 +262,15 @@ class ClassificationTree:
     # the describe() function returns a human-readable description of the fitted model
     def describe(self):
         if not self.trained:
-            print("I am an untrained decision tree with depth limited to %d levels" % self.depth_limit)
+            if self.depth_limit == np.inf:
+                print("I am an untrained decision tree with unlimited depth")
+            else:
+                print("I am an untrained decision tree with depth limited to %d levels" % self.depth_limit)
         else:
-            print("I am a trained decision tree with depth limited to %d levels\n" % self.depth_limit)
+            if self.depth_limit == np.inf:
+                print("I am a trained decision tree with unlimited depth")
+            else:
+                print("I am a trained decision tree with depth limited to %d levels\n" % self.depth_limit)
             nnodes = self.__node_count()
             print("I have %d decision and terminal nodes, arranged in %d levels." % (nnodes, len(self.nodes)))
 

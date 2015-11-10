@@ -24,8 +24,18 @@ class TreeBagger:
         self.trees = [0]*n_trees
         self.trained = False
 
+    def __untrain(self):
+        self.trained = False
+        self.trees = [0]*self.n_trees
+        print("Retraining")
+
     def train(self, X, y):
         #TODO: check that X,y are good
+
+        #check if trained
+        if self.trained:
+            self.__untrain()
+
         indices = np.arange(len(X))
         #determine the size of the bootstrap sample
         strapsize = np.int(len(X)*self.fraction)
