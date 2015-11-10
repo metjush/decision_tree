@@ -6,18 +6,18 @@ This repository is a basic implementation of a decision tree algorithm for super
 
 ### Single Tree
 
-The `ClassificationTree` object can be created with one basic parameter: `depth_limit`. This restricts tree depth to prevent over-fitting.
+The `ClassificationTree` object can be created with two basic parameters: `depth_limit` (this restricts tree depth to prevent over-fitting) and `impurity` (which specifies the method for calculating impurity). The default impurity measure is _Gini impurity_, with the other option being _entropy_.
 
 ```python
 from ClassTree import *
-tree = ClassificationTree(depth_limit = 10)
+tree = ClassificationTree(depth_limit = 10, impurity = 'gini')
 ```
 
 The public methods available with this object are `train()`, `predict()`, `evaluate()` and `cross_val()`. The tree can be learned with the `train` function, supplying the feature dataset `X` and class labels `y` (as numpy arrays):
 
 ```python
 from ClassTree import *
-tree = ClassificationTree(depth_limit = 10)
+tree = ClassificationTree(depth_limit = 10, impurity = 'gini')
 
 tree.train(X, y)
 ```
@@ -26,7 +26,7 @@ Upon training, you can use the `predict` function to use the learned decision ru
 
 ```python
 from ClassTree import *
-tree = ClassificationTree(depth_limit = 10)
+tree = ClassificationTree(depth_limit = 10, impurity = 'gini')
 
 tree.train(X, y)
 
@@ -37,7 +37,7 @@ An alternative to the `predict` function is the `evaluate` function that runs th
 
 ```python
 from ClassTree import *
-tree = ClassificationTree(depth_limit = 10)
+tree = ClassificationTree(depth_limit = 10, impurity = 'gini')
 
 tree.train(X, y)
 
@@ -52,18 +52,18 @@ Instead of straight-forward training, you can also use cross-validation with the
 
 ```python
 from ClassTree import *
-tree = ClassificationTree(depth_limit = 10)
+tree = ClassificationTree(depth_limit = 10, impurity = 'gini')
 
 cross_val_scores = tree.cross_val(X, y, split = 0.3, method = 'f1', folds = 5)
 ```
 
 ### Bagged Forest
 
-The `TreeBagger` object implements a wrapper for growing a "forest" of "bagged" trees. _Bagging_ refers to _bootstrap aggregating_, where for a specified number of iterations, a new tree is grown with a bootstrapped subsample (with repetition) of the supplied dataset. The class `init`s with parameters that specify the number of trees (`n_trees`), the depth limit of each tree (`depth_limit`) and the fraction of the dataset that should be used as a size of each bootstrap sample (`sample_fraction`).
+The `TreeBagger` object implements a wrapper for growing a "forest" of "bagged" trees. _Bagging_ refers to _bootstrap aggregating_, where for a specified number of iterations, a new tree is grown with a bootstrapped subsample (with repetition) of the supplied dataset. The class `init`s with parameters that specify the number of trees (`n_trees`), the depth limit of each tree (`depth_limit`), the fraction of the dataset that should be used as a size of each bootstrap sample (`sample_fraction`), and the impurity measure to be used (`'gini'` or `'entropy'`).
 
 ```python
 from ClassTreeBagging import *
-bag = TreeBagger(n_trees=50, depth_limit = 10, sample_fraction=0.75)
+bag = TreeBagger(n_trees=50, depth_limit = 10, sample_fraction=0.75, impurity = 'gini')
 ```
 
 The public methods are the same as those for the simple tree, with the exception of cross-validation, which isn't currently implemented for the Bagged Forest. 
