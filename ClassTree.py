@@ -57,7 +57,7 @@ class ClassificationTree:
             return 0.
         classes, props = self.__classshares(labels)
         gini = 1 - np.dot(props.T, props)
-        return gini
+        return gini[0][0]
 
     #__impurity() is a wrapper for impurity calculations (entropy/gini)
     def __impurity(self, labels):
