@@ -74,6 +74,11 @@ class ClassificationTree:
         values = np.unique(feature)
         bestentropy = np.inf
         bestsplit = 0
+        #check if the number of values isn't too large
+        if len(values) > 10:
+            minv = values.min()
+            maxv = values.max()
+            values = np.arange(minv, maxv, (maxv-minv)/10.)
         for v in values:
             leftmask = feature <= v
             rightmask = feature > v
