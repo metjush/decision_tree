@@ -27,6 +27,8 @@ class ClassificationTree:
         self.trained = False
         #set the desired impurity measure
         self.impurity = impurity
+        #dimensions of the supplied training data
+        self.dimensions = 0
 
     #helper functions
 
@@ -212,14 +214,18 @@ class ClassificationTree:
                 raise TypeError("input label vector y is not a valid numeric array")
         if self.trained:
             self.__untrain()
+
         self.__algorithm(X, y)
         self.trained = True
+        self.dimensions = X.shape[1]
         print("Tree grown")
 
     # once the tree has been trained, you can call the predict() function to generate predicted labels for the supplied dataset
     def predict(self, X):
         if not self.trained:
             raise RuntimeError("The decision tree classifier hasn't been trained yet")
+        if not X.shape[1] == self.dimensions:
+            raise IndexError("The supplied dataset has %d features, which do not match %d features from training" % (X.shape[1], self.dimensions))
 
         yhat = np.zeros(len(X))
         for i,x in enumerate(X):
@@ -300,7 +306,7 @@ class ClassificationTree:
             nnodes = self.__node_count()
             print("I have %d decision and terminal nodes, arranged in %d levels." % (nnodes, len(self.nodes)))
 
-
+   
 
 
 
