@@ -79,9 +79,10 @@ class ClassificationTree:
             rightmask = feature > v
             leftentropy = self.__impurity(labels[leftmask])
             rightentropy = self.__impurity(labels[rightmask])
-            totentropy = leftentropy + rightentropy
-            if totentropy < bestentropy:
-                bestentropy = totentropy
+            #weighted mean of impurity
+            mean_entropy = (np.sum(leftmask)*leftentropy + np.sum(rightmask)*rightentropy) / len(labels)
+            if mean_entropy < bestentropy:
+                bestentropy = mean_entropy
                 bestsplit = v
         return bestsplit, bestentropy
 
