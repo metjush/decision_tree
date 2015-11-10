@@ -74,6 +74,14 @@ The `RandomForest` object implementes a wrapper for growing a random forest. The
 
 The rule of thumb used in subsampling features is `sqrt(n)`. For low-dimensional datasets (`n<=10`), this is ignored and all features are used.
 
+## JSON Import and Export
+
+A trained tree (currently just a single tree, not a forest) can be saved as a JSON file. This is done with the `to_json()` function of a `ClassificationTree` instance. It takes one parameter: `filename`. Which is a filename/path to the file where to save the json.
+
+Upon saving the JSON, you can rebuild a tree from a valid JSON file with the `from_json()` function, which also takes `filename` as a parameter that specifies the path to the saved JSON.
+
+This functionality lets you backup your trained model for reuse and/or to use the trained tree structure for visualization.
+
 ## Helpful resources
 
 The following documents really helped in implementing the algorithm:
