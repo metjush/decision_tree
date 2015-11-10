@@ -17,7 +17,7 @@ from TreeNode import Node
 #this is the main classifier object
 class ClassificationTree:
 
-    def __init__(self, depth_limit=None):
+    def __init__(self, depth_limit=None, impurity="gini"):
         #depth limit of the tree
         self.depth_limit = depth_limit if type(depth_limit) in set({int, float, np.int64, np.float64}) else np.inf
         #an array that holds all the nodes created during training
@@ -25,6 +25,8 @@ class ClassificationTree:
         self.nodes = [[]]
         #whether the model has been trained
         self.trained = False
+        #set the desired impurity measure
+        self.impurity = impurity
 
     #helper functions
 
@@ -49,6 +51,24 @@ class ClassificationTree:
         entropy = -np.dot( props.T, np.log2(props+0.00001) )
         return entropy[0][0]
 
+    #__gini() is an alternative impurity calculation to entropy
+    def __gini(self, labels):
+        if len(labels) == 0:
+            return 0.
+        classes, props = self.__classshares(labels)
+        gini = 1 - np.dot(props.T, props)
+        return gini
+
+    #__impurity() is a wrapper for impurity calculations (entropy/gini)
+    def __impurity(self, labels):
+        if self.impurity == "gini":
+            return self.__gini(labels)
+        elif self.impurity == "entropy":
+            return self.__entropy(labels)
+        else:
+            return self.__gini(labels)
+
+
     #__bestsplit() finds the split that results into lowest entropy
     def __bestsplit(self, feature, labels):
         values = np.unique(feature)
@@ -57,8 +77,8 @@ class ClassificationTree:
         for v in values:
             leftmask = feature <= v
             rightmask = feature > v
-            leftentropy = self.__entropy(labels[leftmask])
-            rightentropy = self.__entropy(labels[rightmask])
+            leftentropy = self.__impurity(labels[leftmask])
+            rightentropy = self.__impurity(labels[rightmask])
             totentropy = leftentropy + rightentropy
             if totentropy < bestentropy:
                 bestentropy = totentropy
@@ -78,7 +98,7 @@ class ClassificationTree:
 
     def __algorithm(self, S, labels, level=0, par_node=None, left=False):
         #calculate initial entropy
-        null_entropy = self.__entropy(labels)
+        null_entropy = self.__impurity(labels)
         #check if everyone is in the same class
         if null_entropy <= 0. or level >= self.depth_limit:
             #terminate the algorithm, everyone's been classified or maximum depth has been reached
