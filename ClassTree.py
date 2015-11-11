@@ -230,7 +230,6 @@ class ClassificationTree:
         self.__algorithm(X, y)
         self.trained = True
         self.dimensions = X.shape[1]
-        print("Tree grown")
 
     # once the tree has been trained, you can call the predict() function to generate predicted labels for the supplied dataset
     def predict(self, X):

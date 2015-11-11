@@ -30,6 +30,7 @@ class TreeBagger:
         self.trees = [0]*self.n_trees
         print("Retraining")
 
+    # train() trains the Bagged Forest with input numpy arrays X and y
     def train(self, X, y):
         #TODO: check that X,y are good
 
@@ -53,6 +54,9 @@ class TreeBagger:
         self.trained = True
         print("%d trees grown" % self.n_trees)
 
+    # predict() uses a trained Bagged Forest to predict labels for a supplied numpy array X
+    # returns a one-dimensional vector of predictions, which is selected by a plurality
+    # vote from all the bagged trees
     def predict(self, X):
         if not self.trained:
             raise RuntimeError("The bagged forest classifier hasn't been trained yet")
@@ -67,7 +71,11 @@ class TreeBagger:
 
         return final_vote.flatten()
 
-    def evaluate(self, X, y, method='f1'):
+    # evaluate() is built on top of predict() to also score the generated prediction
+    # the methods are the same as with the individual tree
+    # the default method is the F1 score
+    # alternatives are classification accuracy and Matthews correlation coefficient
+    def evaluate(self, X, y, method = 'f1'):
         yhat = self.predict(X)
         accurate = y == yhat
         positive = np.sum(y == 1)
@@ -94,4 +102,27 @@ class TreeBagger:
         else:
             warnings.warn("Wrong evaluation method specified, defaulting to F1 score", RuntimeWarning)
             return self.evaluate(X,y)
+
+    # cross_val() implements cross validation for training Bagged Forests
+    # for each fold (default = 1), it splits the input dataset X,y by the
+    # split parameter (default = 0.3), trains the Bag on the training split
+    # and evaluates it on the cross-val split, using the provided method
+    # (defaults to F1)
+    def cross_val(self, X, y, split = 0.3, method = 'f1', folds = 1):
+        indices = np.arange(len(X))
+        set_ind = set(indices)
+        size = np.int(len(X)*(1-split))
+        scores = np.zeros(folds)
+        for f in range(folds):
+            train = np.random.choice(indices, size, replace=False)
+            set_train = set(train)
+            set_test = list(set_ind.difference(set_train))
+            Xtrain = X[train, :]
+            ytrain = y[train]
+            Xtest = X[set_test, :]
+            ytest = y[set_test]
+            self.train(Xtrain,ytrain)
+            scores[f] = self.evaluate(Xtest, ytest, method)
+            print(scores[f])
+        return scores
 
