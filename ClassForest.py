@@ -33,33 +33,52 @@ class RandomForest:
         self.trees = [[]]*self.n_trees
         print("Retraining")
 
-    def train(self, X, y):
-        #TODO: check that X and y are good arrays
+    #__numpify() takes a regular python list and turns it into a numpy array
+    def __numpify(self, array):
+        numpied = np.array(array)
+        if numpied.dtype in ['int64', 'float64']:
+            return numpied
+        else:
+            return False
 
-        #check if trained
+    def train(self, X, y):
+        # check dimensions
+        if not len(X) == len(y):
+            raise IndexError("The number of samples in X and y do not match")
+        # check if X and y are numpy arrays
+        if type(X) is not np.ndarray:
+            X = self.__numpify(X)
+            if not X:
+                raise TypeError("input dataset X is not a valid numeric array")
+        if type(y) is not np.ndarray:
+            y = self.__numpify(y)
+            if not y:
+                raise TypeError("input label vector y is not a valid numeric array")
+
+        # check if trained
         if self.trained:
             self.__untrain()
 
         indices = np.arange(len(X))
-        #determine the size of the bootstrap sample
+        # determine the size of the bootstrap sample
         strapsize = np.int(len(X)*self.fraction)
         features = np.arange(X.shape[1])
-        #determine the number of features to subsample each iteration
-        #using the sqrt(n) rule of thumb if n > 10
+        # determine the number of features to subsample each iteration
+        # using the sqrt(n) rule of thumb if n > 10
         subsize = np.ceil(np.sqrt(X.shape[1])).astype(np.int) if X.shape[1] >= 9 else X.shape[1]
 
-        #start growing the tree
+        # start growing the tree
         for t in range(self.n_trees):
-            #creat a new classification tree
+            # creat a new classification tree
             tree = ClassificationTree(depth_limit=self.depth_limit, impurity=self.impurity)
-            #bootstrap a sample
+            # bootstrap a sample
             bootstrap = np.random.choice(indices, strapsize)
             subfeature = np.random.choice(features, subsize, replace=False) #features are not sampled with replacement
             Xstrap = X[bootstrap,:][:,subfeature]
             ystrap = y[bootstrap]
-            #train the t-th tree with the strapped sample
+            # train the t-th tree with the strapped sample
             tree.train(Xstrap,ystrap)
-            #for each tree, need to save which features to use
+            # for each tree, need to save which features to use
             self.trees[t] = [tree, subfeature]
         self.trained = True
         print("%d trees grown" % self.n_trees)

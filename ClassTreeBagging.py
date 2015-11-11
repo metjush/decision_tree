@@ -30,9 +30,28 @@ class TreeBagger:
         self.trees = [0]*self.n_trees
         print("Retraining")
 
+    #__numpify() takes a regular python list and turns it into a numpy array
+    def __numpify(self, array):
+        numpied = np.array(array)
+        if numpied.dtype in ['int64', 'float64']:
+            return numpied
+        else:
+            return False
+
     # train() trains the Bagged Forest with input numpy arrays X and y
     def train(self, X, y):
-        #TODO: check that X,y are good
+        #check dimensions
+        if not len(X) == len(y):
+            raise IndexError("The number of samples in X and y do not match")
+        #check if X and y are numpy arrays
+        if type(X) is not np.ndarray:
+            X = self.__numpify(X)
+            if not X:
+                raise TypeError("input dataset X is not a valid numeric array")
+        if type(y) is not np.ndarray:
+            y = self.__numpify(y)
+            if not y:
+                raise TypeError("input label vector y is not a valid numeric array")
 
         #check if trained
         if self.trained:
