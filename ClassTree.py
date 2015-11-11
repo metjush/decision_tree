@@ -15,7 +15,7 @@ import warnings
 from TreeNode import Node
 import json
 
-#this is the main classifier object
+
 class ClassificationTree:
 
     def __init__(self, depth_limit=None, impurity="gini"):
@@ -70,7 +70,6 @@ class ClassificationTree:
             return self.__entropy(labels)
         else:
             return self.__gini(labels)
-
 
     #__bestsplit() finds the split that results into lowest entropy
     def __bestsplit(self, feature, labels):
@@ -172,7 +171,6 @@ class ClassificationTree:
                 self.nodes[level+1]
             except IndexError:
                 self.nodes.append([])
-                #print("Moving one level deeper")
 
             #recursively call self again on the two children nodes
             new_node.outcome[0] = self.__algorithm(leftS,leftLabels,level=level+1,par_node=new_node)
@@ -191,13 +189,11 @@ class ClassificationTree:
 
     #__untrain() removes old learned nodes when a new train() is called on a trained tree
     def __untrain(self):
-        #print("Retraining the tree, dumping old learned rules")
         self.trained = False
         self.nodes = [[]]
 
     #__numpify() takes a regular python list and turns it into a numpy array
     def __numpify(self, array):
-        dim0 = len(array)
         numpied = np.array(array)
         if numpied.dtype in ['int64', 'float64']:
             return numpied

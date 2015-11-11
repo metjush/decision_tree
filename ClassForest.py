@@ -10,8 +10,7 @@ __author__ = 'metjush'
 #  the number of examples to select for each iteration, and the maximum depth of each forest
 # In contrast to the Bagged Forest implemented in ClassTreeBagging.py, the Random Forest implementation
 #  also subsets features with each tree grown
-# Works best with a large number of features. If n <= 10, all features are used in all trees.
-
+# Works best with a large number of features. If n < 9, all features are used in all trees.
 
 import numpy as np
 from ClassTree import ClassificationTree
@@ -47,7 +46,7 @@ class RandomForest:
         features = np.arange(X.shape[1])
         #determine the number of features to subsample each iteration
         #using the sqrt(n) rule of thumb if n > 10
-        subsize = np.ceil(np.sqrt(X.shape[1])).astype(np.int) if X.shape[1] > 10 else X.shape[1]
+        subsize = np.ceil(np.sqrt(X.shape[1])).astype(np.int) if X.shape[1] >= 9 else X.shape[1]
 
         #start growing the tree
         for t in range(self.n_trees):

@@ -5,9 +5,10 @@ __author__ = 'metjush'
 
 import numpy as np
 
+
 class Node:
 
-    #the object is initialized by telling the node along which feature it is splitting
+    # the object is initialized by telling the node along which feature it is splitting
     # what the split threshold is, what the parent node of this node is,
     # what level (starting with 0 as the root node) of the tree this is,
     # and what entropy was at this node before splitting
