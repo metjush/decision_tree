@@ -159,7 +159,7 @@ class ClassificationTree:
             rightS = S[rightMask,:][:,features]
 
             #check if you shouldn't terminate here
-            
+
             if len(leftS) == 0 or leftS.shape[1] == 0:
                 new_node.make_terminal(self.__bestguess(rightLabels))
                 return new_node
@@ -386,17 +386,7 @@ class ClassificationTree:
         #load basics
         try:
             self.depth_limit = tree_dict["depth"]
-        except KeyError:
-            print("Invalid JSON format")
-            return False
-
-        try:
             self.dimensions = tree_dict["dimensions"]
-        except KeyError:
-            print("Invalid JSON format")
-            return False
-
-        try:
             levels = tree_dict["levels"]
         except KeyError:
             print("Invalid JSON format")
