@@ -1,6 +1,12 @@
 .idea
 *.pyc
 
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
 # OS generated files #
 ######################
 .DS_Store
