@@ -141,10 +141,32 @@ class ClassificationTree:
             leftMask = S[:,best_split[0]] <= best_split[1]
             rightMask = S[:,best_split[0]] > best_split[1]
             features.remove(best_split[0])
-            leftS = S[leftMask,:][:,features]
-            rightS = S[rightMask,:][:,features]
+
             leftLabels = labels[leftMask]
             rightLabels = labels[rightMask]
+
+            # check if you shouldn't terminate here
+            # when the split puts all samples into left or right branch
+
+            if leftMask.all():
+                new_node.make_terminal(self.__bestguess(leftLabels))
+                return new_node
+            if rightMask.all():
+                new_node.make_terminal(self.__bestguess(rightLabels))
+                return new_node
+
+            leftS = S[leftMask,:][:,features]
+            rightS = S[rightMask,:][:,features]
+
+            #check if you shouldn't terminate here
+            
+            if len(leftS) == 0 or leftS.shape[1] == 0:
+                new_node.make_terminal(self.__bestguess(rightLabels))
+                return new_node
+            if len(rightS) == 0 or rightS.shape[1] == 0:
+                new_node.make_terminal(self.__bestguess(leftLabels))
+                return new_node
+
             #check if a level below you already exists
             try:
                 self.nodes[level+1]
@@ -152,13 +174,6 @@ class ClassificationTree:
                 self.nodes.append([])
                 #print("Moving one level deeper")
 
-            #check if you shouldn't terminate here
-            if len(leftS) == 0 or leftS.shape[1] == 0:
-                new_node.make_terminal(self.__bestguess(rightLabels))
-                return new_node
-            if len(rightS) == 0 or rightS.shape[1] == 0:
-                new_node.make_terminal(self.__bestguess(leftLabels))
-                return new_node
             #recursively call self again on the two children nodes
             new_node.outcome[0] = self.__algorithm(leftS,leftLabels,level=level+1,par_node=new_node)
             new_node.outcome[1] = self.__algorithm(rightS,rightLabels,level=level+1,par_node=new_node)
