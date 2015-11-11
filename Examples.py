@@ -49,6 +49,9 @@ tree.cross_val(X_iris, y_iris, folds=5)
 bag.train(X_iris, y_iris)
 print("Accuracy of the bagged forest on iris dataset is %f" % bag.evaluate(X_iris, y_iris))
 
+# Cross validation of a tree bag
+bag.cross_val(X_iris, y_iris, folds=5)
+
 # Random forest
 forest.train(X_iris, y_iris)
 print("Accuracy of the random forest on iris dataset is %f" % forest.evaluate(X_iris, y_iris))
