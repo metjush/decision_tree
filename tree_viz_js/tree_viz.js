@@ -14,52 +14,46 @@ function requestJSON(file, response) {
 
 var tree_json = 0;
 
-requestJSON("iris_json.json", function(response) {
+requestJSON("small_tree.json", function(response) {
 	tree_json = JSON.parse(response);
 	console.log(tree_json);
 
 
 	// TODO: Allow user to load variable names
 	// Thus far, hardcode variable names
-	var var_names = ['sepal length', 'sepal width', 'petal length', 'petal width'];
+	var var_names = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 	// Likewise, hardcode label names
-	var class_names = ['Setosa', 'Virginica', 'Versicolor'];
+	var class_names = [0,1,2];
 
 	// Set up basic parameters of the tree
 
-	// available real estate
-
-	var avail_height = window.innerHeight;
-	var avail_width = window.innerWidth;
-	var midpoint = avail_width/2.2;
 
 	// determine node size and branch size
 
 	var depth = tree_json.depth;
-	var spread = Math.pow(2,depth);
+	finalkey = "lvl"+(depth-1);
+	var spread = Math.pow(depth, 2);
 	var node_margin = 20;
-	var node_width = avail_width/spread - node_margin;
-	var node_height = avail_height/(4*depth);
+	var node_width = 50;
+	var node_height = 50;
 	var branch_height = node_height/2;
 	var padding = node_width*0.1;
 
 	// Load canvas element and context
 
-	var canvas = document.getElementById('exampleCanvas'),
+	var canvas = document.getElementById('tree'),
 	    context = canvas.getContext('2d');
 
 	// Set width and height
-	context.canvas.width = avail_width;
-	context.canvas.height = avail_height;
+	context.canvas.width = (node_width+node_margin)*(spread);
+	context.canvas.height = (node_height+branch_height)*(depth+1);
+	var midpoint = (node_width+node_margin)*(spread)/2.2;
 
 	// Function to draw a node
 
 	function drawNode(json, level, node, originx, originy, names) {
 		key = "lvl" + level;
 		n = json.levels[key][node];
-		// level and position start from 0
-		console.log(n);
-
 		// draw rectangle
 
 		context.strokeRect(originx, originy, node_width, node_height);
@@ -69,29 +63,31 @@ requestJSON("iris_json.json", function(response) {
 		if(!n.terminal) {
 			context.fillStyle = "gray";
 			context.font = "10px sans-serif";
-			context.fillText(names[n.feature],originx + padding, originy + 2*padding);
+			context.fillText(names[n.feature],originx + padding, originy + node_height/2.3);
 			context.font = "11px monospace";
-			context.fillText("<" + n.threshold.toFixed(2), originx + padding, originy + 5*padding);
+			context.fillText("<" + n.threshold.toFixed(2), originx + padding, originy + node_height/1.7);
 			left = n.outcome[0].index;
 			right = n.outcome[1].index;
 			level_left = n.outcome[0].level;
 			level_right = n.outcome[1].level;
-			key_below = "lvl" + (level+1);
-			nodes_below = json.levels[key_below].length;
+
+			reverse_key = "lvl" + (depth-2-level)
+			nodes_above = json.levels[reverse_key].length;
+			
 			names.splice(n.feature, 1);
-			drawBranches(json, originx, originy, level_left, level_right, left, right, nodes_below, names);	
+			drawBranches(json, originx, originy, level_left, level_right, left, right, nodes_above, names);	
 		} else {
 			context.font = "bold 11px sans-serif";
 			context.fillStyle = "aqua";
 			context.fillRect(originx, originy, node_width, node_height);
 			context.fillStyle = "black";
-			context.fillText(class_names[n.outcome], originx + padding, originy + 2*padding);
+			context.fillText(class_names[n.outcome], originx + padding, originy + node_height/2);
 			
 		}
 
 	}
 
-	function drawBranches(json, nodex, nodey, level_left, level_right, left, right, nodes_below, names) {
+	function drawBranches(json, nodex, nodey, level_left, level_right, left, right, nodes_above, names) {
 		// Move from corner to the bottom center
 		var startx = nodex + (node_width/2);
 		var starty = nodey + (node_height);
@@ -100,27 +96,23 @@ requestJSON("iris_json.json", function(response) {
 
 		context.beginPath();
 		context.moveTo(startx, starty);
-		context.lineTo(startx - node_width - nodes_below*node_margin, starty + branch_height);
+		context.lineTo(startx - (node_width)*nodes_above, starty + branch_height);
 		context.stroke();
 
 		// Recursively draw another node
-		xleft = startx - 1.5*node_width - nodes_below*node_margin;
+		xleft = startx - (node_width)*nodes_above - 0.5*node_width;
 		yleft = starty + branch_height;
-		console.log(level_left, left);
-		console.log(startx, starty);
 		drawNode(json, level_left, left, xleft, yleft, names);
 
 		// Draw right line
 
 		context.beginPath();
 		context.moveTo(startx, starty);
-		context.lineTo(startx + node_width + nodes_below*node_margin, starty + branch_height);
+		context.lineTo(startx + (node_width)*nodes_above, starty + branch_height);
 		context.stroke();
 
 		// Recursively draw another node
-		console.log(level_right, right);
-		console.log(startx, starty);
-		xright = startx + 0.5*node_width + nodes_below*node_margin; 
+		xright = startx - 0.5*node_width + (node_width)*nodes_above; 
 		yright = starty + branch_height;
 		drawNode(json, level_right, right, xright, yright, names);
 
@@ -130,7 +122,6 @@ requestJSON("iris_json.json", function(response) {
 
 	originx = midpoint;
 	originy = 0;
-	console.log(originx, originy);
 
 	drawNode(tree_json, 0, 0, originx, originy, var_names);
 

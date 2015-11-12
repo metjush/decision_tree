@@ -6,6 +6,7 @@
 
         <meta charset="utf-8" />
         <title>Decision Tree Visualization</title>
+        <link rel="stylesheet" href="reset.css" type="text/css" />
         <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -14,23 +15,20 @@
 
     <body>
 
-   		<h1> Visualizing a decision tree from .json </h1> 
+   		<h1> Visualizing a decision tree from json backup </h1> 
+   		<div id="wrapper">
+	     	<canvas id="tree" width="500" height="300">
 
-     	<canvas id="exampleCanvas" width="500" height="300">
+			  <!-- OPTION 1: leave a message here if browser doesn't support canvas -->
+			    <p>Your browser doesn’t currently support HTML5 Canvas. 
+			    Please check caniuse.com/#feat=canvas for information on 
+			    browser support for canvas.</p>
 
-		  <!-- OPTION 1: leave a message here if browser doesn't support canvas -->
-		    <p>Your browser doesn’t currently support HTML5 Canvas. 
-		    Please check caniuse.com/#feat=canvas for information on 
-		    browser support for canvas.</p>
+			  <!-- OPTION 2: put fallback content (text, image, Flash, etc.) 
+			                 if the browser doesn't support canvas -->
 
-		  <!-- OPTION 2: put fallback content (text, image, Flash, etc.) 
-		                 if the browser doesn't support canvas -->
-
-		 </canvas>
+			 </canvas>
+			</div>
 		 <script src="tree_viz.js"></script>
     </body>
     
-
-
-</html>            
-
