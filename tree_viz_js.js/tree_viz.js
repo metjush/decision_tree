@@ -22,6 +22,8 @@ requestJSON("iris_json.json", function(response) {
 	// TODO: Allow user to load variable names
 	// Thus far, hardcode variable names
 	var var_names = ['sepal length', 'sepal width', 'petal length', 'petal width'];
+	// Likewise, hardcode label names
+	var class_names = ['Setosa', 'Virginica', 'Versicolor'];
 
 	// Set up basic parameters of the tree
 
@@ -37,7 +39,7 @@ requestJSON("iris_json.json", function(response) {
 	var spread = Math.pow(2,depth);
 	var node_margin = 20;
 	var node_width = avail_width/spread - node_margin;
-	var node_height = avail_height/(3*depth);
+	var node_height = avail_height/(4*depth);
 	var branch_height = node_height/2;
 	var padding = node_width*0.1;
 
@@ -65,7 +67,10 @@ requestJSON("iris_json.json", function(response) {
 		// write name and rule
 
 		if(!n.terminal) {
+			context.fillStyle = "gray";
+			context.font = "10px sans-serif";
 			context.fillText(names[n.feature],originx + padding, originy + 2*padding);
+			context.font = "11px monospace";
 			context.fillText("<" + n.threshold.toFixed(2), originx + padding, originy + 5*padding);
 			left = n.outcome[0].index;
 			right = n.outcome[1].index;
@@ -76,7 +81,12 @@ requestJSON("iris_json.json", function(response) {
 			names.splice(n.feature, 1);
 			drawBranches(json, originx, originy, level_left, level_right, left, right, nodes_below, names);	
 		} else {
-			context.fillText(n.outcome, originx + padding, originy + 2*padding);
+			context.font = "bold 11px sans-serif";
+			context.fillStyle = "aqua";
+			context.fillRect(originx, originy, node_width, node_height);
+			context.fillStyle = "black";
+			context.fillText(class_names[n.outcome], originx + padding, originy + 2*padding);
+			
 		}
 
 	}
