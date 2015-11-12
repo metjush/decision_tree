@@ -60,7 +60,7 @@ class TreeBagger:
         indices = np.arange(len(X))
         #determine the size of the bootstrap sample
         strapsize = np.int(len(X)*self.fraction)
-        for t in range(self.n_trees):
+        for t in xrange(self.n_trees):
             #creat a new classification tree
             tree = ClassificationTree(depth_limit=self.depth_limit, impurity=self.impurity)
             #bootstrap a sample
@@ -83,7 +83,7 @@ class TreeBagger:
         #combine predictions into one matrix
         #get the mode of predictions for each sample
         prediction_matrix = np.zeros((len(X), self.n_trees))
-        for t in range(self.n_trees):
+        for t in xrange(self.n_trees):
             pred = self.trees[t].predict(X)
             prediction_matrix[:,t] = pred
         final_vote = stats.mode(prediction_matrix, axis=1)[0]
@@ -132,7 +132,7 @@ class TreeBagger:
         set_ind = set(indices)
         size = np.int(len(X)*(1-split))
         scores = np.zeros(folds)
-        for f in range(folds):
+        for f in xrange(folds):
             train = np.random.choice(indices, size, replace=False)
             set_train = set(train)
             set_test = list(set_ind.difference(set_train))

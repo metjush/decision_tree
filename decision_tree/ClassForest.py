@@ -68,7 +68,7 @@ class RandomForest:
         subsize = np.ceil(np.sqrt(X.shape[1])).astype(np.int) if X.shape[1] >= 9 else X.shape[1]
 
         # start growing the tree
-        for t in range(self.n_trees):
+        for t in xrange(self.n_trees):
             # creat a new classification tree
             tree = ClassificationTree(depth_limit=self.depth_limit, impurity=self.impurity)
             # bootstrap a sample
@@ -89,7 +89,7 @@ class RandomForest:
         # the exception to the bagged forest is the subsetting of features,
         # which needs to be account for in prediction/evaluation too
         prediction_matrix = np.zeros((len(X), self.n_trees))
-        for t in range(self.n_trees):
+        for t in xrange(self.n_trees):
             tree = self.trees[t][0]
             subX = X[:,self.trees[t][1]]
             pred = tree.predict(subX)

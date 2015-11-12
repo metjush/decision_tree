@@ -289,7 +289,7 @@ class ClassificationTree:
         set_ind = set(indices)
         size = np.int(len(X)*(1-split))
         scores = np.zeros(folds)
-        for f in range(folds):
+        for f in xrange(folds):
             train = np.random.choice(indices, size, replace=False)
             set_train = set(train)
             set_test = list(set_ind.difference(set_train))
@@ -389,7 +389,7 @@ class ClassificationTree:
 
         #first run, just create Node instances so that you can reference them in output/parents
 
-        for i in range(len(levels)):
+        for i in xrange(len(levels)):
             key = "lvl%d" % i
             level = levels[key]
             if len(level) > 0:
