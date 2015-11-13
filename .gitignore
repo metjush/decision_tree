@@ -1,5 +1,7 @@
 .idea
 *.pyc
+.csv
+.json
 
 # Setuptools distribution folder.
 /dist/

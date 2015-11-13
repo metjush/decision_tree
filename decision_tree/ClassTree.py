@@ -104,11 +104,11 @@ class ClassificationTree:
     # 6. if the optimal split results into putting all samples down one branch, make the node terminal
     # 7. move down the two branches and repeat from 1.
 
-    def __algorithm(self, S, labels, level=0, par_node=None, left=False):
+    def __algorithm(self, S, labels, level=0, par_node=None, left=False, terminal_flag=False):
         #calculate initial entropy
         null_entropy = self.__impurity(labels)
         #check if everyone is in the same class
-        if null_entropy <= 0. or level >= self.depth_limit:
+        if null_entropy <= 0. or level >= self.depth_limit or terminal_flag:
             #terminate the algorithm, everyone's been classified or maximum depth has been reached
             final_node = Node(parent=par_node,level=level,entropy=null_entropy)
             final_node.outcome[0] = self.__bestguess(labels)
@@ -117,7 +117,7 @@ class ClassificationTree:
         else:
             #go over all the features in this dataset
             features = range(S.shape[1])
-            min_entropy = null_entropy
+            min_entropy = np.inf
             best_split = [0,0] #this will hold feature number and threshold value for the best split
             for f in features:
                 #try all possible splits along this feature
@@ -129,7 +129,7 @@ class ClassificationTree:
                     min_entropy = entropy
                     best_split = [f, split]
 
-            new_node = Node(feature=best_split[0], threshold=best_split[1], parent=par_node, level=level, entropy=null_entropy)
+            new_node = Node(feature=best_split[0], threshold=best_split[1], parent=par_node, level=level, entropy=min_entropy)
             self.nodes[level].extend( [new_node] )
             #split dataset
             #check if S is a vector
@@ -154,8 +154,13 @@ class ClassificationTree:
                 new_node.make_terminal(self.__bestguess(rightLabels))
                 return new_node
 
-            leftS = S[leftMask,:][:,features]
-            rightS = S[rightMask,:][:,features]
+            if len(features) == 0:
+                leftS = S[leftMask,:]
+                rightS = S[rightMask,:]
+                terminal_flag = True
+            else:
+                leftS = S[leftMask,:][:,features]
+                rightS = S[rightMask,:][:,features]
 
             #check if you shouldn't terminate here
 
@@ -173,8 +178,8 @@ class ClassificationTree:
                 self.nodes.append([])
 
             #recursively call self again on the two children nodes
-            new_node.outcome[0] = self.__algorithm(leftS,leftLabels,level=level+1,par_node=new_node)
-            new_node.outcome[1] = self.__algorithm(rightS,rightLabels,level=level+1,par_node=new_node)
+            new_node.outcome[0] = self.__algorithm(leftS,leftLabels,level=level+1,par_node=new_node,terminal_flag=terminal_flag)
+            new_node.outcome[1] = self.__algorithm(rightS,rightLabels,level=level+1,par_node=new_node,terminal_flag=terminal_flag)
             return new_node
         #print("Tree grown")
 
@@ -423,8 +428,16 @@ class ClassificationTree:
         self.trained = True
         return self
 
+tree = ClassificationTree()
 
+data = np.loadtxt("weight_height.csv", delimiter=";")
+X = data[:,0:2]
+y = data[:,-1]
+tree.train(X,y)
 
+tree.describe()
+
+tree.to_json("test.json")
 
 
 

@@ -77,6 +77,7 @@ document.getElementById("json_submit").onclick = function(e) {
 		function drawNode(json, level, node, originx, originy, names) {
 			key = "lvl" + level;
 			n = json.levels[key][node];
+			var vars = names;
 			// draw rectangle
 
 			context.strokeRect(originx, originy, node_width, node_height);
@@ -85,10 +86,10 @@ document.getElementById("json_submit").onclick = function(e) {
 
 			if(!n.terminal) {
 				context.fillStyle = "gray";
-				context.font = "10px sans-serif";
-				context.fillText(names[n.feature],originx + padding, originy + node_height/2.3);
+				context.font = "italic 10px sans-serif";
+				context.fillText(vars[n.feature],originx + padding, originy + 15);
 				context.font = "11px monospace";
-				context.fillText("<" + n.threshold.toFixed(2), originx + padding, originy + node_height/1.7);
+				context.fillText("<" + n.threshold.toFixed(2), originx + padding, originy + 35);
 				left = n.outcome[0].index;
 				right = n.outcome[1].index;
 				level_left = n.outcome[0].level;
@@ -97,8 +98,8 @@ document.getElementById("json_submit").onclick = function(e) {
 				reverse_key = "lvl" + (depth-2-level)
 				nodes_above = json.levels[reverse_key].length;
 				
-				names.splice(n.feature, 1);
-				drawBranches(json, originx, originy, level_left, level_right, left, right, nodes_above, names);	
+				vars.splice(n.feature, 1);
+				drawBranches(json, originx, originy, level_left, level_right, left, right, nodes_above, vars);	
 			} else {
 				context.font = "bold 11px sans-serif";
 				context.fillStyle = "aqua";
@@ -114,6 +115,7 @@ document.getElementById("json_submit").onclick = function(e) {
 			// Move from corner to the bottom center
 			var startx = nodex + (node_width/2);
 			var starty = nodey + (node_height);
+			var vars = names;
 
 			// Draw left line
 
@@ -125,7 +127,7 @@ document.getElementById("json_submit").onclick = function(e) {
 			// Recursively draw another node
 			xleft = startx - (node_width)*nodes_above - 0.5*node_width;
 			yleft = starty + branch_height;
-			drawNode(json, level_left, left, xleft, yleft, names);
+			drawNode(json, level_left, left, xleft, yleft, vars);
 
 			// Draw right line
 
@@ -137,7 +139,7 @@ document.getElementById("json_submit").onclick = function(e) {
 			// Recursively draw another node
 			xright = startx - 0.5*node_width + (node_width)*nodes_above; 
 			yright = starty + branch_height;
-			drawNode(json, level_right, right, xright, yright, names);
+			drawNode(json, level_right, right, xright, yright, vars);
 
 		}
 
