@@ -52,6 +52,20 @@ h1 {
 	margin: 1%;
 }
 
+h2 {
+	font: bold 15pt sans-serif;
+	margin: 1%;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+img {
+	margin: 0 1%;
+}
+
+.image {
+	display: none;
+}
 #wrapper {
 	width: 100%;
 	height: 80%;

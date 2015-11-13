@@ -28,6 +28,9 @@ var variables = document.getElementById("json_names");
 var classes = document.getElementById("json_classes");
 var reset = document.getElementById("tree_reset");
 
+var saveimg = document.getElementById('canvasImg');
+var h2 = document.getElementById('imgHeader');
+
 var filename = "small_tree.json";
 var var_names = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 var class_names = [0,1,2];
@@ -115,7 +118,6 @@ document.getElementById("json_submit").onclick = function(e) {
 			var startx = nodex + (node_width/2);
 			var starty = nodey + (node_height);
 			var varsleft = names.slice();
-			console.log(varsleft);
 			// Draw left line
 
 			context.beginPath();
@@ -129,9 +131,7 @@ document.getElementById("json_submit").onclick = function(e) {
 			drawNode(json, level_left, left, xleft, yleft, varsleft);
 
 			// Draw right line
-			console.log("Right");
 			var varsright = names.slice();
-			console.log(varsright);
 			context.beginPath();
 			context.moveTo(startx, starty);
 			context.lineTo(startx + (node_width)*nodes_above, starty + branch_height);
@@ -151,7 +151,12 @@ document.getElementById("json_submit").onclick = function(e) {
 		console.log(var_names);
 		drawNode(tree_json, 0, 0, originx, originy, var_names);
 
+		// Save as image
 
+		var dataURL = canvas.toDataURL();
+		saveimg.src = dataURL;
+		h2.style.display = 'block';
+		saveimg.style.display = 'none';
 	});
 
 
@@ -163,6 +168,18 @@ reset.onclick = function(e) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	reset.style.display = "none";
 }
+
+h2.onclick = function() {
+	if (saveimg.style.display == 'none') {
+		saveimg.style.display = 'block';
+	} else {
+		saveimg.style.display = 'none';
+	}
+	
+};
+
+		
+
 
 
 
