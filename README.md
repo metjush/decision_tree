@@ -90,6 +90,8 @@ This functionality lets you backup your trained model for reuse and/or to use th
 
 Having exported a trained tree as JSON, you can use the barebones HTML and Javascript code in `tree_viz_js` to visualize this tree. After supplying a link/path to the JSON file, along with feature names and class labels, the script will draw a structure of the tree. Each node will show the name of the splitting feature, together with the decision threshold, if it is a decision node. Terminal nodes will show the assigned class labels.
 
+A demo of this visualization can be found live here at my Github Page: <metjush.github.io/tree_viz_js>.
+
 ![Example Tree Visualization](tree_viz.png "Example Tree Visualization")
 
 ## Helpful resources
