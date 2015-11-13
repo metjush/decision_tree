@@ -57,3 +57,32 @@ h1 {
 	height: 80%;
 	overflow: scroll;
 }
+
+form {
+	margin: 1%;
+	font: 12pt sans-serif;
+}
+
+label {
+	display: block;
+}
+
+input {
+	margin: 0.5% 0;
+	display: block;
+}
+
+#json_submit {
+	background: aqua;
+	border: none;
+}
+
+#tree_reset {
+	margin: 1%;
+	background: red;
+	color: white;
+	border: none;
+	display: none;
+}
+
+

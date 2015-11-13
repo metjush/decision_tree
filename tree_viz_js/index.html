@@ -16,6 +16,16 @@
     <body>
 
    		<h1> Visualizing a decision tree from json backup </h1> 
+        <form id="setup_form">
+            <label> Enter the link to your json file here: </label> 
+            <input type="text" placeholder="file.json" id="json_file" />
+            <label> Enter variable names, separated by space, here: </label>
+            <input type="text" placeholder="age height gender" id="json_names" />
+            <label> Enter class names, separated by space, here: </label>
+            <input type="text" placeholder="small large" id="json_classes" />
+            <input type="submit" value="Submit" id="json_submit" />
+        </form>
+        <input type="button" value="Reset" id="tree_reset" />
    		<div id="wrapper">
 	     	<canvas id="tree" width="500" height="300">
 

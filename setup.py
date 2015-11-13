@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='decision_tree',
-			version='0.01',
+			version='0.02',
 			description='Practice implementation of a classification decision tree',
 			classifiers=[
         'Development Status :: 2 - Pre-Alpha',
