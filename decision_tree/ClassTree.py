@@ -428,17 +428,5 @@ class ClassificationTree:
         self.trained = True
         return self
 
-tree = ClassificationTree(depth_limit = 5)
-
-X = np.loadtxt("testX.csv", delimiter=",")
-y = np.loadtxt("testy.csv", delimiter=",")
-tree.train(X,y)
-
-tree.describe()
-
-tree.to_json("titanic.json")
-
-
-
 
 
