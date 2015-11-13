@@ -31,6 +31,7 @@ var reset = document.getElementById("tree_reset");
 var filename = "small_tree.json";
 var var_names = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 var class_names = [0,1,2];
+var class_colors = ["orange", "aqua", "lime", "blue", "brown", "gray"];
 
 document.getElementById("json_submit").onclick = function(e) {
 	e.preventDefault();
@@ -46,8 +47,6 @@ document.getElementById("json_submit").onclick = function(e) {
 
 	requestJSON(filename, function(response) {
 		tree_json = JSON.parse(response);
-		console.log(tree_json);
-
 
 		// TODO: Allow user to load variable names
 		// Thus far, hardcode variable names
@@ -60,9 +59,9 @@ document.getElementById("json_submit").onclick = function(e) {
 
 		var depth = tree_json.depth;
 		finalkey = "lvl"+(depth-1);
-		var spread = Math.pow(depth, 2);
+		var spread = Math.pow(2, depth);
 		var node_margin = 20;
-		var node_width = 50;
+		var node_width = 65;
 		var node_height = 50;
 		var branch_height = node_height/2;
 		var padding = node_width*0.1;
@@ -102,7 +101,7 @@ document.getElementById("json_submit").onclick = function(e) {
 				drawBranches(json, originx, originy, level_left, level_right, left, right, nodes_above, vars);	
 			} else {
 				context.font = "bold 11px sans-serif";
-				context.fillStyle = "aqua";
+				context.fillStyle = class_colors[n.outcome];
 				context.fillRect(originx, originy, node_width, node_height);
 				context.fillStyle = "black";
 				context.fillText(class_names[n.outcome], originx + padding, originy + node_height/2);
@@ -115,8 +114,8 @@ document.getElementById("json_submit").onclick = function(e) {
 			// Move from corner to the bottom center
 			var startx = nodex + (node_width/2);
 			var starty = nodey + (node_height);
-			var vars = names;
-
+			var varsleft = names.slice();
+			console.log(varsleft);
 			// Draw left line
 
 			context.beginPath();
@@ -127,10 +126,12 @@ document.getElementById("json_submit").onclick = function(e) {
 			// Recursively draw another node
 			xleft = startx - (node_width)*nodes_above - 0.5*node_width;
 			yleft = starty + branch_height;
-			drawNode(json, level_left, left, xleft, yleft, vars);
+			drawNode(json, level_left, left, xleft, yleft, varsleft);
 
 			// Draw right line
-
+			console.log("Right");
+			var varsright = names.slice();
+			console.log(varsright);
 			context.beginPath();
 			context.moveTo(startx, starty);
 			context.lineTo(startx + (node_width)*nodes_above, starty + branch_height);
@@ -139,7 +140,7 @@ document.getElementById("json_submit").onclick = function(e) {
 			// Recursively draw another node
 			xright = startx - 0.5*node_width + (node_width)*nodes_above; 
 			yright = starty + branch_height;
-			drawNode(json, level_right, right, xright, yright, vars);
+			drawNode(json, level_right, right, xright, yright, varsright);
 
 		}
 
@@ -147,7 +148,7 @@ document.getElementById("json_submit").onclick = function(e) {
 
 		originx = midpoint;
 		originy = 0;
-
+		console.log(var_names);
 		drawNode(tree_json, 0, 0, originx, originy, var_names);
 
 
