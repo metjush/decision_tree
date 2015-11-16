@@ -258,28 +258,53 @@ class ClassificationTree:
     # Matthews correlation coefficient is an alternative to the F1 score for evaluating an algorithm
     #  when classes are not balanced
 
-    def evaluate(self, X, y, method='f1'):
-        yhat = self.predict(X)
-        accurate = y == yhat
-        positive = np.sum(y == 1)
-        hatpositive = np.sum(yhat == 1)
-        tp = np.sum(yhat[accurate] == 1)
-
-        #F1 score
-        if method == 'f1':
+    def __f1(self, y, yhat):
+        # check if this is a multi-class problem
+        classes, _ = self.__classshares(y)
+        if len(classes) <= 2:
+            # binary F1
+            accurate = y == yhat
+            positive = np.sum(y == 1)
+            hatpositive = np.sum(yhat == 1)
+            tp = np.sum(yhat[accurate] == 1)
             recall = 1.*tp/positive if positive > 0 else 0.
             precision = 1.*tp/hatpositive if hatpositive > 0 else 0.
             f1 = (2.*precision*recall)/(precision+recall) if (precision+recall) > 0 else 0.
             return f1
+        else:
+            # multi-class problem
+            # iterate over classes, weighing by true occurence
+            f1 = 0
+            for label in classes:
+                # create binary vectors to recursively calculate f1
+                y_binary = np.copy(y)
+                y_binary[y == label] = 1
+                y_binary[y != label] = 0
+
+                yhat_binary = np.copy(yhat)
+                yhat_binary[yhat == label] = 1
+                yhat_binary[yhat != label] = 0
+
+                f1 += np.sum(y == label) * self.__f1(y_binary, yhat_binary)
+            return f1 / len(yhat)
+
+    def evaluate(self, X, y, method='f1'):
+        yhat = self.predict(X)
+        accurate = y == yhat
+
+        #F1 score
+        if method == 'f1':
+            return self.__f1(y, yhat)
         #simple accuracy measure
         elif method == 'acc':
             return (1.*np.sum(accurate))/len(yhat)
         #matthews correlation coefficient
         elif method == 'matthews':
+            tp = np.sum(yhat[accurate] == 1)
             tn = np.sum(yhat[accurate] == 0)
             fp = np.sum(yhat[np.invert(accurate)] == 1)
             fn = np.sum(yhat[np.invert(accurate)] == 0)
-            denominator = np.sqrt( (tp+fp)*(tp+fn)*(tn+fp)*(tn*fn) )
+            denominator = np.sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn*fn))
             mat = 1.*((tp*tn)-(fp*fn)) / denominator if denominator > 0 else 0.
             return mat
         else:
